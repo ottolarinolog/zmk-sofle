@@ -4,7 +4,6 @@
 #include <input/processors.dtsi>
 #include <zephyr/dt-bindings/input/input-event-codes.h>
 #include <behaviors.dtsi>
-#include <dt-bindings/zmk/backlight.h>
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/outputs.h>
@@ -36,7 +35,48 @@
         tap-ms = <100>;
     };
 
+    brightness: brightness {
+        compatible = "zmk,behavior-sensor-rotate";
+        label = "BRIGHTNESS";
+        #sensor-binding-cells = <0>;
+        bindings = <&rgb_ug RGB_BRI>, <&rgb_ug RGB_BRD>;
+    };
+
     behaviors {
+    };
+
+    combos {
+        compatible = "zmk,combos";
+
+        up_arrov {
+            bindings = <&kp UP>;
+            key-positions = <48 62>;
+            layers = <0>;
+        };
+
+        sat_inc {
+            bindings = <&rgb_ug RGB_SAI>;
+            key-positions = <52 6>;
+            layers = <2>;
+        };
+
+        sat_dec {
+            bindings = <&rgb_ug RGB_SAD>;
+            key-positions = <52 19>;
+            layers = <2>;
+        };
+
+        speed_inc {
+            bindings = <&rgb_ug RGB_SPI>;
+            key-positions = <52 45>;
+            layers = <2>;
+        };
+
+        speed_dec {
+            bindings = <&rgb_ug RGB_SPD>;
+            key-positions = <52 32>;
+            layers = <2>;
+        };
     };
 
     keymap {
@@ -44,11 +84,11 @@
 
         layer0 {
             bindings = <
-&kp ESC     &kp N1        &kp N2     &kp N3    &kp N4  &kp N5    &mmv MOVE_UP     &kp N6   &kp N7     &kp N8        &kp N9     &kp N0     &kp BACKSPACE
-&kp TAB     &kp Q         &kp W      &kp E     &kp R   &kp T     &mmv MOVE_DOWN   &kp Y    &kp U      &kp I         &kp O      &kp P      &kp BACKSLASH
-&kp CAPS    &kp A         &kp S      &kp D     &kp F   &kp G     &mmv MOVE_LEFT   &kp H    &kp J      &kp K         &kp L      &kp SEMI   &kp ENTER
-&kp LSHFT   &kp Z         &kp X      &kp C     &kp V   &kp B     &mmv MOVE_RIGHT  &kp N    &kp M      &kp UP_ARROW  &kp COMMA  &kp DOT    &kp SLASH
-&kp C_MUTE  &kp LEFT_GUI  &kp LCTRL  &kp LALT  &mo 1   &mo 2     &mkp LCLK        &kp DEL  &kp SPACE  &kp LEFT      &kp DOWN   &kp RIGHT
+&kp ESC     &kp N1        &kp N2     &kp N3    &kp N4  &kp N5    &mmv MOVE_UP     &kp N6   &kp N7     &kp N8     &kp N9    &kp N0     &kp BACKSPACE
+&kp TAB     &kp Q         &kp W      &kp E     &kp R   &kp T     &mmv MOVE_DOWN   &kp Y    &kp U      &kp I      &kp O     &kp P      &kp BACKSLASH
+&kp CAPS    &kp A         &kp S      &kp D     &kp F   &kp G     &mmv MOVE_LEFT   &kp H    &kp J      &kp K      &kp L     &kp SEMI   &kp ENTER
+&kp LSHFT   &kp Z         &kp X      &kp C     &kp V   &kp B     &mmv MOVE_RIGHT  &kp N    &kp M      &kp COMMA  &kp DOT   &kp SLASH  &kp RSHIFT
+&kp C_MUTE  &kp LEFT_GUI  &kp LCTRL  &kp LALT  &mo 1   &mo 2     &mkp LCLK        &kp DEL  &kp SPACE  &kp LEFT   &kp DOWN  &kp RIGHT
             >;
 
             sensor-bindings = <&inc_dec_kp C_VOLUME_UP C_VOL_DN>;
@@ -57,11 +97,11 @@
 
         layer_1 {
             bindings = <
-&kp GRAVE  &none  &none   &none  &none  &none       &msc SCRL_UP    &none          &none   &none   &none    &kp MINUS         &kp EQUAL
-&none      &none  &none   &none  &none  &kp HOME    &msc SCRL_DOWN  &kp PAGE_UP    &kp N7  &kp N8  &kp N9   &kp LEFT_BRACKET  &kp RIGHT_BRACKET
-&none      &none  &none   &none  &none  &kp END     &mkp MB4        &kp PAGE_DOWN  &kp N4  &kp N5  &kp N6   &none             &none
-&trans     &none  &none   &none  &none  &none       &mkp MB5        &none          &kp N1  &kp N2  &kp N3   &none             &none
-&none      &none  &trans  &none  &none  &none       &mkp RCLK       &none          &none   &kp N0  &kp DOT  &kp ENTER
+&kp GRAVE  &none   &none   &none  &none  &none       &msc SCRL_UP    &none          &none   &none   &none    &kp MINUS         &kp EQUAL
+&none      &none   &none   &none  &none  &kp HOME    &msc SCRL_DOWN  &kp PAGE_UP    &kp N7  &kp N8  &kp N9   &kp LEFT_BRACKET  &kp RIGHT_BRACKET
+&none      &none   &none   &none  &none  &kp END     &mkp MB4        &kp PAGE_DOWN  &kp N4  &kp N5  &kp N6   &none             &none
+&trans     &none   &none   &none  &none  &none       &mkp MB5        &none          &kp N1  &kp N2  &kp N3   &none             &trans
+&none      &trans  &trans  &none  &none  &none       &mkp RCLK       &none          &none   &kp N0  &kp DOT  &kp ENTER
             >;
 
             display-name = "NumFn";
@@ -70,15 +110,15 @@
 
         layer_2 {
             bindings = <
-&bt BT_CLR_ALL  &kp F1  &kp F2  &kp F3  &kp F4  &kp F5    &kp PRINTSCREEN  &kp F6  &kp F7  &kp F8  &kp F9  &kp F10  &kp F11
-&bt BT_SEL 0    &none   &none   &none   &none   &none     &none            &none   &none   &none   &none   &none    &kp F12
-&bt BT_SEL 1    &none   &none   &none   &none   &none     &rgb_ug RGB_EFR  &none   &none   &none   &none   &none    &none
-&out OUT_TOG    &none   &none   &none   &none   &none     &rgb_ug RGB_EFF  &none   &none   &none   &none   &none    &none
-&bl BL_TOG      &none   &trans  &none   &none   &none     &rgb_ug RGB_TOG  &none   &none   &none   &none   &none
+&bt BT_CLR_ALL   &kp F1  &kp F2  &kp F3  &kp F4  &kp F5    &rgb_ug RGB_HUI  &kp F6  &kp F7  &kp F8  &kp F9  &kp F10  &kp F11
+&bt BT_SEL 0     &none   &none   &none   &none   &none     &rgb_ug RGB_HUD  &none   &none   &none   &none   &none    &kp F12
+&bt BT_SEL 1     &none   &none   &none   &none   &none     &rgb_ug RGB_EFR  &none   &none   &none   &none   &none    &none
+&out OUT_TOG     &none   &none   &none   &none   &none     &rgb_ug RGB_EFF  &none   &none   &none   &none   &none    &none
+&rgb_ug RGB_TOG  &none   &trans  &none   &none   &none     &kp PRINTSCREEN  &none   &none   &none   &none   &none
             >;
 
             display-name = "System";
-            sensor-bindings = <&scroll_encoder>;
+            sensor-bindings = <&brightness>;
         };
     };
 };
