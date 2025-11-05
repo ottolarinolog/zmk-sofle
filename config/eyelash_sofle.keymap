@@ -52,38 +52,40 @@
             bindings = <&kp UP>;
             key-positions = <48 62>;
             layers = <0>;
+            timeout-ms = <200>;
+            require-prior-idle-ms = <200>;
         };
 
         sat_inc {
             bindings = <&rgb_ug RGB_SAI>;
             key-positions = <52 6>;
             layers = <2>;
-            timeout-ms = <200>;
-            require-prior-idle-ms = <200>;
+            timeout-ms = <400>;
+            require-prior-idle-ms = <400>;
         };
 
         sat_dec {
             bindings = <&rgb_ug RGB_SAD>;
             key-positions = <52 19>;
             layers = <2>;
-            timeout-ms = <200>;
-            require-prior-idle-ms = <200>;
+            timeout-ms = <400>;
+            require-prior-idle-ms = <400>;
         };
 
         speed_inc {
             bindings = <&rgb_ug RGB_SPI>;
             key-positions = <52 45>;
             layers = <2>;
-            timeout-ms = <200>;
-            require-prior-idle-ms = <200>;
+            timeout-ms = <400>;
+            require-prior-idle-ms = <400>;
         };
 
         speed_dec {
             bindings = <&rgb_ug RGB_SPD>;
             key-positions = <52 32>;
             layers = <2>;
-            timeout-ms = <200>;
-            require-prior-idle-ms = <200>;
+            timeout-ms = <400>;
+            require-prior-idle-ms = <400>;
         };
     };
 
